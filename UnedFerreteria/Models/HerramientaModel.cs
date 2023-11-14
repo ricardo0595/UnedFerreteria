@@ -16,6 +16,7 @@ namespace UnedFerreteria.Models
         [Required]
         public int? Cantidad { get; set; }
         [Required]
+        [MaxLength(4)]
         public String? Codigo { get; set; }
         [ValidateNever]
         [NotMapped]
