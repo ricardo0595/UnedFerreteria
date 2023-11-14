@@ -1,0 +1,58 @@
+﻿@model IEnumerable<UnedFerreteria.Models.PrestamosModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Prestar Herramienta</a>
+    <a asp-action="Devolver">Devolucion de Herramienta</a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdColaborador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdHerramienta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaPrestamo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaEsperada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaEntrega)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdColaborador)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdHerramienta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaPrestamo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaEsperada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaEntrega)
+            </td>
+           
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,7 +1,13 @@
+using UnedFerreteria.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<FerreteriaContext>(options =>
+               options.UseSqlServer(builder.Configuration.GetConnectionString("UnedFerreteria")));
 
 var app = builder.Build();
 

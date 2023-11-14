@@ -1,0 +1,100 @@
+﻿@model UnedFerreteria.Models.PrestamosModel
+
+@{
+    ViewData["Title"] = "Create";
+    HerramientaModel herramientaModel = new HerramientaModel();
+    List<ColaboradorModel> listaColaborador = (List<ColaboradorModel>)ViewData["listaColaborador"];
+    var selectItemsColaborador = new SelectList(listaColaborador, "Id", "Nombre");
+
+}
+
+<h1>Create</h1>
+
+<h4>PrestamosModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @{
+            if (Model?.Errores != null)
+            {
+            foreach (var item in Model.Errores)
+            {
+                                    <span class="text-danger">@item.Titulo : @item.Descripcion </span>
+            }
+            }
+
+        }
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdColaborador" class="control-label"></label>
+                @Html.DropDownListFor(m => m.IdColaborador,
+                selectList: selectItemsColaborador,
+                htmlAttributes: new { @id = "selectColaborador" }
+                )
+                <span asp-validation-for="IdColaborador" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdHerramienta" class="control-label"></label>
+                <select name="IdHerramienta" id="selectHerramienta">
+                    <option value="" selected>Seleccione</option>
+                </select>
+            </div>
+            
+             <div class="form-group">
+                <label asp-for="FechaEntrega" class="control-label"></label>
+                <input asp-for="FechaEntrega" class="form-control" />
+                <span asp-validation-for="FechaEntrega" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <input type="submit" value="Devolver Herramienta" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+   
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    
+    var selectHerramientas = document.getElementById("selectHerramienta");
+    var selectColaborador = document.getElementById("selectColaborador");
+
+    selectColaborador.onchange = function (e) {
+        
+        var requestOptions = {
+            method: 'GET',
+        };
+
+        fetch("@Url.Content("~")/Herramienta/GetHerramientasByColaborador?idColaborador=" + e.target.value, requestOptions)
+            .then(response => response.text())
+            .then(function (result) { 
+                var list = JSON.parse(result)
+                console.log(list)
+                if (list.length) {
+                    list.forEach(function (it) {
+                        const op = document.createElement('option')
+                        op.value = it.id
+                        op.innerHTML = it.nombre
+                        selectHerramientas.add(op)
+                    })
+                }else{
+                    while (selectHerramientas.options.length > 1) {
+                        selectHerramientas.remove(1);
+                    }
+                }
+               
+                
+            })
+            .catch(error => console.log('error', error));
+    }
+
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

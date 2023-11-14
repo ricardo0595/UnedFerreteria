@@ -1,0 +1,84 @@
+﻿@model UnedFerreteria.Models.PrestamosModel
+
+@{
+    ViewData["Title"] = "Create";
+    List<HerramientaModel> listaHerramientas = (List<HerramientaModel>)ViewData["listaHerramientas"];
+    List<ColaboradorModel> listaColaborador = (List<ColaboradorModel>)ViewData["listaColaborador"];
+
+    var selectItemsColaborador = new SelectList(listaColaborador,"Id","Nombre");
+    var selectItemsHerramienta = new SelectList(listaHerramientas, "Id", "Nombre");
+
+    HerramientaModel herramientaModel = new HerramientaModel();
+
+}
+
+<h1>Create</h1>
+
+<h4>PrestamosModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @{
+            if (Model?.Errores != null)
+            {
+            foreach (var item in Model.Errores)
+            {
+            <span class="text-danger">@item.Titulo : @item.Descripcion </span>
+            }
+            }
+
+        }
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdColaborador" class="control-label"></label>
+                @Html.DropDownListFor(m => m.IdColaborador,
+                selectList: selectItemsColaborador,
+                htmlAttributes: new { @class = "" }
+                )
+               @*  <label asp-for="IdColaborador" class="control-label"></label>
+                <input asp-for="IdColaborador" class="form-control" /> *@
+                <span asp-validation-for="IdColaborador" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdHerramienta" class="control-label"></label>
+                @Html.DropDownListFor(m => m.IdHerramienta,
+                selectList: selectItemsHerramienta,
+                htmlAttributes: new { @class = "" }
+                )
+                @* <label asp-for="IdHerramienta" class="control-label"></label>
+                <input asp-for="IdHerramienta" class="form-control" /> *@
+                <span asp-validation-for="IdHerramienta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaPrestamo" class="control-label"></label>
+                <input asp-for="FechaPrestamo" class="form-control" />
+                <span asp-validation-for="FechaPrestamo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaEsperada" class="control-label"></label>
+                <input asp-for="FechaEsperada" class="form-control" />
+                <span asp-validation-for="FechaEsperada" class="text-danger"></span>
+            </div>
+            @* <div class="form-group">
+                <label asp-for="FechaEntrega" class="control-label"></label>
+                <input asp-for="FechaEntrega" class="form-control" />
+                <span asp-validation-for="FechaEntrega" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <input type="submit" value="Prestar Herramienta" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-8">
+        @Html.RenderPartialAsync("~/Views/Herramienta/Index.cshtml",listaHerramientas);
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
